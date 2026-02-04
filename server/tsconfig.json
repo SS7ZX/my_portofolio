@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./src",           /* Where your TS files live */
+    "outDir": "./dist",          /* Where your compiled JS will go */
+    
+    "strict": true,
+    "esModuleInterop": true,     /* Essential for importing Express correctly */
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    
+    "sourceMap": true,           /* Helps with debugging */
+    "declaration": true          /* Generates type files */
+  },
+  "include": ["src/**/*"],       /* Only compile files in src */
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/* --- CUSTOM THEME VARIABLES --- */
+:root {
+  --terminal-cyan: #06b6d4;
+  --terminal-yellow: #eab308;
+  --terminal-red: #ef4444;
+  --terminal-bg: #0a0a0a;
+}
+
+/* --- TERMINAL SCROLLBAR --- */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #27272a; /* zinc-800 */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--terminal-cyan);
+}
+
+/* --- CYBER GLITCH ANIMATION --- */
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1.5px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+}
+
+.glitch-text:hover {
+  animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+  text-shadow: 
+    0.05em 0 0 rgba(255, 0, 0, 0.75),
+    -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+    0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+}
+
+/* --- DATA SCANNING PULSE (Yellow) --- */
+@keyframes scanning-pulse {
+  0% { top: -10%; opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { top: 110%; opacity: 0; }
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--terminal-yellow), transparent);
+  animation: scanning-pulse 3s linear infinite;
+  pointer-events: none;
+}
+
+/* --- LASER SCAN ANIMATION (Red/VAPT) --- */
+@keyframes laser-scan {
+  0% { top: 0%; opacity: 0; }
+  50% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.laser-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: var(--terminal-red);
+  box-shadow: 0 0 15px var(--terminal-red);
+  animation: laser-scan 2s linear infinite;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.report-gradient {
+  background: linear-gradient(180deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%);
+}
+
+/* --- TERMINAL CURSOR BLINK --- */
+.terminal-input-caret {
+  border-right: 2px solid var(--terminal-cyan);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to { border-color: transparent }
+  50% { border-color: var(--terminal-cyan); }
+}
+
+/* --- SELECTION STYLING --- */
+::selection {
+  background: rgba(6, 182, 212, 0.3);
+  color: #fff;
+}
