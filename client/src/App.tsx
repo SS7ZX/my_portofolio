@@ -1723,11 +1723,17 @@ const App = () => {
         }
         return prev + 1;
       });
-    }, 350);
+    }, 180);
   }, []);
+
+  // Auto-scan on boot so counter always shows all 11 projects immediately
+  const handleBootComplete = useCallback(() => {
+    setBootComplete(true);
+    setTimeout(() => startScan(), 800);
+  }, [startScan]);
   
   if (!bootComplete) {
-    return <KaliBootLoader onComplete={() => setBootComplete(true)} />;
+    return <KaliBootLoader onComplete={handleBootComplete} />;
   }
   
   return (
@@ -1760,6 +1766,55 @@ const App = () => {
       
       <EnhancedMatrixRain />
       <ParticleNetwork />
+
+      {/* ==================== STICKY NAV ==================== */}
+      <motion.nav
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="sticky top-0 z-40 w-full bg-black/80 backdrop-blur-xl border-b border-cyan-500/20 shadow-lg shadow-black/50"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14">
+            <div className="flex items-center gap-3">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+              >
+                <Shield size={18} className="text-cyan-400" />
+              </motion.div>
+              <span className="font-mono text-xs text-cyan-400 font-bold tracking-widest">ADNAN OS v4.3.0</span>
+              <motion.div
+                animate={{ opacity: [1, 0.5, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="flex items-center gap-1.5"
+              >
+                <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                <span className="text-[9px] font-mono text-green-400">ONLINE</span>
+              </motion.div>
+            </div>
+            <div className="hidden md:flex items-center gap-6 text-[10px] font-mono text-gray-500 uppercase tracking-widest">
+              {['System', 'Threat_Intel', 'Certifications', 'Skills', 'Projects'].map((item) => (
+                <motion.button
+                  key={item}
+                  whileHover={{ color: '#06b6d4', y: -1 }}
+                  className="hover:text-cyan-400 transition-colors cursor-pointer"
+                  onClick={() => {
+                    const el = document.getElementById(item.toLowerCase().replace('_', '-'));
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  {item.replace('_', ' ')}
+                </motion.button>
+              ))}
+            </div>
+            <div className="flex items-center gap-3 text-[9px] font-mono text-gray-600">
+              <span className="hidden sm:block">EDR: <span className="text-emerald-400">TARTARUS ACTIVE</span></span>
+              <span className="hidden lg:block">| KERNEL: <span className="text-cyan-400">6.12.0-ebpf</span></span>
+            </div>
+          </div>
+        </div>
+      </motion.nav>
       
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Hero Section */}
@@ -1825,7 +1880,7 @@ const App = () => {
           </p>
           
 {/* ==================== ACTION SECTOR ==================== */}
-<div className="flex flex-wrap gap-6 mt-12">
+<div className="flex flex-wrap gap-4 mt-12">
   {/* GitHub Link */}
   <motion.a
     href="https://github.com/SS7ZX"
@@ -1844,125 +1899,130 @@ const App = () => {
     <ExternalLink size={18} className="opacity-50" />
   </motion.a>
 
-  {/* Advanced Resume Downloader */}
+  {/* Resume Download */}
   <motion.button
     onClick={() => {
-      // 1. UI Feedback
       const btn = document.getElementById('download-btn-text');
       if (btn) btn.innerText = "INITIALIZING_SECURE_TRANSFER...";
-      
-      // 2. Play simulated 'OS' sound or visual logic here if you want
-      
       setTimeout(() => {
         if (btn) btn.innerText = "DECRYPTING_RESUME.DAT...";
-        
         setTimeout(() => {
-          // 3. The Real Download Trigger
           const link = document.createElement('a');
-          link.href = '/CV_Adnan_Syukur.pdf'; // Path to file in public folder
+          link.href = '/CV_Adnan_Syukur.pdf';
           link.download = 'Adnan_Syukur_CV.pdf';
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-          
-          if (btn) btn.innerText = "TRANSFER_COMPLETE";
+          if (btn) btn.innerText = "TRANSFER_COMPLETE ✓";
           setTimeout(() => { if (btn) btn.innerText = "DOWNLOAD_RESUME"; }, 3000);
         }, 1500);
       }, 1000);
     }}
-    whileHover={{ 
-      scale: 1.05, 
-      boxShadow: '0 0 40px rgba(16, 185, 129, 0.4)',
-      y: -5
-    }}
+    whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(16, 185, 129, 0.4)', y: -5 }}
     whileTap={{ scale: 0.95 }}
     className="px-8 py-4 bg-emerald-500/10 border-2 border-emerald-500/40 rounded-xl font-bold text-emerald-400 hover:bg-emerald-500/20 transition-all flex items-center gap-3 relative overflow-hidden group"
   >
-    {/* Scanning Animation Overlay */}
     <motion.div 
       className="absolute inset-0 bg-emerald-500/10 pointer-events-none"
       initial={{ x: '-100%' }}
       whileHover={{ x: '100%' }}
       transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
     />
-    
-    <Rocket size={22} className="group-hover:translate-y-2px group-hover:translate-x-2px transition-transform" />
+    <Rocket size={22} className="relative z-10" />
     <span id="download-btn-text" className="relative z-10 tracking-widest text-xs">
       DOWNLOAD_RESUME
     </span>
-    
-    {/* Status Light */}
-    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]" />
+    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981] relative z-10" />
   </motion.button>
+
+  {/* LinkedIn */}
+  <motion.a
+    href="https://linkedin.com"
+    target="_blank"
+    rel="noreferrer"
+    whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(139, 92, 246, 0.4)', y: -5 }}
+    whileTap={{ scale: 0.95 }}
+    className="px-8 py-4 bg-purple-500/10 border-2 border-purple-500/40 rounded-xl font-bold text-purple-400 hover:bg-purple-500/20 transition-all flex items-center gap-3 group"
+  >
+    <Users size={22} className="group-hover:scale-110 transition-transform" />
+    <span className="tracking-widest text-xs">LINKEDIN_PROFILE</span>
+  </motion.a>
 </div>
         </motion.header>
 
-        {/* Tartarus EDR Featured Banner */}
+        {/* Tartarus EDR Featured Banner — Premium Elite */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mb-16 relative overflow-hidden"
         >
-          <div className="p-6 bg-gradient-to-r from-emerald-500/10 via-cyan-500/5 to-purple-500/10 border-2 border-emerald-500/50 rounded-2xl shadow-2xl shadow-emerald-500/20 relative overflow-hidden">
+          <div className="p-8 bg-gradient-to-r from-emerald-950/60 via-zinc-900/90 to-purple-950/60 border-2 border-emerald-500/50 rounded-2xl shadow-2xl shadow-emerald-500/20 relative overflow-hidden">
+            {/* Corner accent */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-500/20 to-transparent rounded-bl-[100px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-500/10 to-transparent rounded-tr-[80px] pointer-events-none" />
             {/* Animated scan line */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent pointer-events-none"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500/8 to-transparent pointer-events-none"
               animate={{ x: ['-100%', '200%'] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
             />
-            <div className="flex flex-wrap items-center gap-6 relative z-10">
-              <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-start gap-8 relative z-10">
+              <div className="flex items-start gap-4 flex-1 min-w-0">
                 <motion.div
                   animate={{ rotate: [0, 360] }}
                   transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-                  className="p-3 bg-emerald-500/20 border-2 border-emerald-500/50 rounded-xl"
+                  className="p-3 bg-emerald-500/20 border-2 border-emerald-500/50 rounded-xl shrink-0"
                 >
                   <Zap size={28} className="text-emerald-400" />
                 </motion.div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 rounded uppercase tracking-widest">NEW · Kernel-Grade</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 rounded uppercase tracking-widest">★ Featured Project</span>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    <motion.span 
+                      animate={{ opacity: [1, 0.7, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="text-[10px] font-mono px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 rounded uppercase tracking-widest"
+                    >⚡ NEW · Kernel-Grade</motion.span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 rounded uppercase tracking-widest">★ Flagship Project</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 bg-red-500/10 text-red-400 border border-red-500/30 rounded uppercase tracking-widest">Ring 0 · Professional Grade</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white">🏛️ Tartarus EDR: Omniscient Kernel Shield</h3>
-                  <p className="text-sm text-emerald-400/80 font-mono mt-0.5">eBPF · Rust · Ring 0 · bpf_send_signal(9) · Zero-Leak Policy · Discord Uplink</p>
+                  <h3 className="text-2xl font-black text-white mb-1">🏛️ Tartarus EDR: Omniscient Kernel Shield</h3>
+                  <p className="text-sm text-emerald-400/80 font-mono">eBPF · Rust · bpf_send_signal(9) · BPF Ring Buffer · Zero-Leak · Discord Intelligence Uplink</p>
+                  <p className="text-xs text-gray-500 font-mono mt-2 leading-relaxed max-w-xl">
+                    Bridges Ring 0 kernel space → Rust control plane → Discord cloud relay. The only EDR that enforces a zero-descriptor-leak policy via in-kernel SIGKILL before file access is ever granted.
+                  </p>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-6 ml-auto text-center">
-                <div>
-                  <div className="text-2xl font-black text-white font-mono">231</div>
-                  <div className="text-[9px] font-mono text-yellow-400 uppercase">Stars</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-black text-white font-mono">5.8K</div>
-                  <div className="text-[9px] font-mono text-green-400 uppercase">Downloads</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-black text-emerald-400 font-mono">Ring 0</div>
-                  <div className="text-[9px] font-mono text-gray-400 uppercase">Privilege Level</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-black text-cyan-400 font-mono">0ms</div>
-                  <div className="text-[9px] font-mono text-gray-400 uppercase">FD Leak Time</div>
-                </div>
+              <div className="flex flex-wrap gap-4 text-center shrink-0">
+                {[
+                  { val: '231', label: 'Stars', color: 'text-yellow-400' },
+                  { val: '5.8K', label: 'Downloads', color: 'text-green-400' },
+                  { val: 'Ring 0', label: 'Privilege', color: 'text-emerald-400' },
+                  { val: '0ms', label: 'FD Leak', color: 'text-cyan-400' },
+                  { val: '★★★★★', label: 'Verdict', color: 'text-yellow-300' },
+                ].map((s) => (
+                  <div key={s.label} className="min-w-[60px]">
+                    <div className={`text-xl font-black font-mono ${s.color}`}>{s.val}</div>
+                    <div className="text-[8px] font-mono text-gray-500 uppercase">{s.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-emerald-500/20 grid grid-cols-3 gap-4 relative z-10">
+            <div className="mt-6 pt-5 border-t border-emerald-500/20 grid grid-cols-1 md:grid-cols-3 gap-3 relative z-10">
               {[
-                { label: 'The Infiltrator', desc: 'eBPF/C hooks openat() at Ring 0, inspects memory address inline', color: 'text-cyan-400' },
-                { label: 'The Enforcer', desc: 'bpf_send_signal(9) kills thread before FD ever returns — zero-leak', color: 'text-emerald-400' },
-                { label: 'The Uplink', desc: 'Rust tokio::spawn relay → Discord Rich Embed JSON with forum thread mgmt', color: 'text-purple-400' },
+                { label: '① The Infiltrator', desc: 'eBPF/C hooks openat() at Ring 0 — inspects filename memory address with in-line evaluation before any return path', color: 'text-cyan-400', border: 'border-cyan-500/30', bg: 'bg-cyan-500/5' },
+                { label: '② The Enforcer', desc: 'bpf_send_signal(9) terminates the calling thread before the FD is ever returned — zero-leak guarantee at kernel level', color: 'text-emerald-400', border: 'border-emerald-500/30', bg: 'bg-emerald-500/5' },
+                { label: '③ The Uplink', desc: 'Rust tokio::spawn relay streams alerts as Discord Rich Embed JSON with stateful forum thread management', color: 'text-purple-400', border: 'border-purple-500/30', bg: 'bg-purple-500/5' },
               ].map((item) => (
-                <div key={item.label} className="p-3 bg-black/30 rounded-lg border border-zinc-800">
-                  <div className={`text-[10px] font-mono font-bold ${item.color} uppercase mb-1`}>{item.label}</div>
+                <div key={item.label} className={`p-4 ${item.bg} rounded-xl border ${item.border}`}>
+                  <div className={`text-[10px] font-mono font-bold ${item.color} uppercase mb-2`}>{item.label}</div>
                   <div className="text-[10px] text-gray-400 leading-relaxed">{item.desc}</div>
                 </div>
               ))}
             </div>
           </div>
         </motion.div>
-        <h2 className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-2">
+        <h2 id="system" className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-2">
           <Gauge size={16} className="text-cyan-400" />
           System_Performance_Monitor
         </h2>
@@ -1998,7 +2058,7 @@ const App = () => {
         </div>
         
         {/* Threat Intelligence */}
-        <h2 className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-2">
+        <h2 id="threat-intel" className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-2">
           <Radar size={16} className="text-red-400 animate-pulse" />
           Live_Threat_Intelligence
         </h2>
@@ -2006,20 +2066,41 @@ const App = () => {
           <LiveThreatFeed />
         </div>
         
-        {/* Stats Overview */}
+        {/* Elite Stats Overview */}
         <div className="mb-24 grid grid-cols-1 md:grid-cols-4 gap-6">
           <HolographicCard className="group md:col-span-1">
             <motion.div 
               whileHover={{ scale: 1.05, y: -5 }}
-              className="p-8 bg-zinc-900/60 border-2 border-cyan-500/40 rounded-2xl flex flex-col items-center justify-center hover:bg-zinc-900/80 transition-all"
+              className="p-8 bg-zinc-900/60 border-2 border-cyan-500/40 rounded-2xl flex flex-col items-center justify-center hover:bg-zinc-900/80 transition-all relative overflow-hidden"
             >
-              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-3 group-hover:text-cyan-400 transition-colors">
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-emerald-500/5 pointer-events-none"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              />
+              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-3 group-hover:text-cyan-400 transition-colors relative z-10">
                 Projects_Deployed
               </p>
-              <h4 className="text-8xl font-black text-white font-mono tracking-tighter mb-2">
+              <motion.h4 
+                key={scanProgress}
+                initial={{ scale: 1.3, color: '#06b6d4' }}
+                animate={{ scale: 1, color: '#ffffff' }}
+                transition={{ duration: 0.3 }}
+                className="text-8xl font-black text-white font-mono tracking-tighter mb-2 relative z-10"
+              >
                 {scanProgress.toString().padStart(2, '0')}
-              </h4>
-              <p className="text-xs font-mono text-cyan-400">/ {STATIC_PROJECTS.length} Total</p>
+              </motion.h4>
+              <p className="text-xs font-mono text-cyan-400 relative z-10">/ {STATIC_PROJECTS.length.toString().padStart(2,'0')} Total</p>
+              <div className="mt-3 flex gap-1 relative z-10">
+                {STATIC_PROJECTS.map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className={`w-1.5 h-1.5 rounded-full ${i < scanProgress ? 'bg-cyan-400' : 'bg-zinc-700'}`}
+                    animate={i < scanProgress ? { scale: [1, 1.4, 1] } : {}}
+                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                  />
+                ))}
+              </div>
             </motion.div>
           </HolographicCard>
           
@@ -2030,15 +2111,15 @@ const App = () => {
                 System_Security_Status
               </span>
               <span className="text-cyan-400 bg-cyan-500/10 px-4 py-2 rounded-full border-2 border-cyan-500/40">
-                {isScanning ? '⚡ Scanning Projects...' : '✓ All Systems Operational'}
+                {isScanning ? '⚡ Scanning Projects...' : `✓ All ${STATIC_PROJECTS.length} Systems Verified`}
               </span>
             </div>
             
             <div className="h-5 bg-zinc-900 rounded-full overflow-hidden border-2 border-cyan-500/40 shadow-inner">
               <motion.div 
-                animate={{ width: isScanning ? "100%" : `${(scanProgress / STATIC_PROJECTS.length) * 100}%` }}
+                animate={{ width: `${(scanProgress / STATIC_PROJECTS.length) * 100}%` }}
                 className="h-full bg-linear-to-r from-cyan-500 via-green-500 to-emerald-500 relative"
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
               >
                 <motion.div
                   className="absolute inset-0 bg-linear-to-r from-transparent via-white to-transparent opacity-40"
@@ -2046,6 +2127,22 @@ const App = () => {
                   transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
                 />
               </motion.div>
+            </div>
+
+            {/* Elite additional stats row */}
+            <div className="grid grid-cols-4 gap-3 pt-2">
+              {[
+                { label: 'Kernel EDRs', value: '3', color: 'emerald', icon: '🛡️' },
+                { label: 'Total Stars', value: '1,108', color: 'yellow', icon: '⭐' },
+                { label: 'Downloads', value: '25.5K', color: 'cyan', icon: '🚀' },
+                { label: 'Vuln. Found', value: '0', color: 'green', icon: '✓' },
+              ].map((stat) => (
+                <div key={stat.label} className={`text-center p-3 bg-${stat.color}-500/5 border border-${stat.color}-500/20 rounded-xl`}>
+                  <div className="text-lg mb-1">{stat.icon}</div>
+                  <div className={`text-lg font-black font-mono text-${stat.color}-400`}>{stat.value}</div>
+                  <div className="text-[8px] font-mono text-gray-500 uppercase">{stat.label}</div>
+                </div>
+              ))}
             </div>
             
             <div className="flex justify-between items-center text-[10px] font-mono text-gray-500 uppercase">
@@ -2062,7 +2159,7 @@ const App = () => {
         </div>
         
         {/* Certifications */}
-        <h2 className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-2">
+        <h2 id="certifications" className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-2">
           <Award size={16} className="text-yellow-400" />
           Professional_Certifications
         </h2>
@@ -2137,8 +2234,118 @@ const App = () => {
           ))}
         </div>
         
+        {/* ==================== SKILLS ARSENAL ==================== */}
+        <h2 id="skills" className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-2">
+          <Zap size={16} className="text-yellow-400" />
+          Skills_Arsenal
+        </h2>
+        <div className="mb-32">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                domain: 'Kernel & Systems',
+                icon: '⚙️',
+                color: 'emerald',
+                borderColor: 'border-emerald-500/40',
+                bgColor: 'from-emerald-500/10 to-zinc-900',
+                skills: [
+                  { name: 'C / eBPF', level: 95 },
+                  { name: 'Rust (Systems)', level: 88 },
+                  { name: 'Linux Kernel (LKM)', level: 92 },
+                  { name: 'x86_64 Assembly', level: 72 },
+                  { name: 'BPF Ring Buffer', level: 90 },
+                ]
+              },
+              {
+                domain: 'Security Engineering',
+                icon: '🛡️',
+                color: 'cyan',
+                borderColor: 'border-cyan-500/40',
+                bgColor: 'from-cyan-500/10 to-zinc-900',
+                skills: [
+                  { name: 'Penetration Testing', level: 93 },
+                  { name: 'VAPT / OWASP', level: 95 },
+                  { name: 'Memory Forensics', level: 85 },
+                  { name: 'Reverse Engineering', level: 80 },
+                  { name: 'Exploit Development', level: 78 },
+                ]
+              },
+              {
+                domain: 'Full-Stack & Cloud',
+                icon: '🚀',
+                color: 'purple',
+                borderColor: 'border-purple-500/40',
+                bgColor: 'from-purple-500/10 to-zinc-900',
+                skills: [
+                  { name: 'React / TypeScript', level: 92 },
+                  { name: 'Node.js / Express', level: 90 },
+                  { name: 'Firebase / Cloud', level: 88 },
+                  { name: 'Docker / DevOps', level: 82 },
+                  { name: 'Python / ML/NLP', level: 85 },
+                ]
+              }
+            ].map((category, ci) => (
+              <HolographicCard key={ci} className="group">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: ci * 0.15 }}
+                  className={`p-8 bg-gradient-to-b ${category.bgColor} border-2 ${category.borderColor} rounded-2xl hover:border-${category.color}-500/70 transition-all`}
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <span className="text-3xl">{category.icon}</span>
+                    <h3 className={`text-base font-bold text-${category.color}-400 font-mono uppercase`}>{category.domain}</h3>
+                  </div>
+                  <div className="space-y-4">
+                    {category.skills.map((skill, si) => (
+                      <div key={si}>
+                        <div className="flex justify-between items-center mb-1.5">
+                          <span className="text-xs font-mono text-gray-300">{skill.name}</span>
+                          <span className={`text-xs font-mono text-${category.color}-400 font-bold`}>{skill.level}%</span>
+                        </div>
+                        <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden border border-zinc-700">
+                          <motion.div
+                            className={`h-full bg-gradient-to-r from-${category.color}-600 to-${category.color}-400 rounded-full`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${skill.level}%` }}
+                            transition={{ duration: 1.2, delay: ci * 0.15 + si * 0.1, ease: 'easeOut' }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              </HolographicCard>
+            ))}
+          </div>
+          
+          {/* Tech Badge Cloud */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 p-6 bg-zinc-900/40 border-2 border-zinc-800 rounded-2xl"
+          >
+            <p className="text-[9px] font-mono text-gray-600 uppercase tracking-widest mb-4">Full Technology Stack</p>
+            <div className="flex flex-wrap gap-2">
+              {['C', 'eBPF', 'Rust', 'Python', 'Node.js', 'React', 'TypeScript', 'Linux Kernel', 'Docker', 'Firebase', 'MongoDB', 'Redis', 'Figma', 'Burp Suite', 'Nmap', 'Metasploit', 'Wireshark', 'LSM Hooks', 'BPF Ring Buffer', 'tokio', 'OWASP', 'x86_64 ASM', 'Kprobes', 'SELinux', 'nftables', 'Git', 'Google Cloud', 'Tailwind CSS', 'JWT', 'OAuth2'].map((tech, i) => (
+                <motion.span
+                  key={tech}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 + i * 0.03 }}
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  className="text-[10px] font-mono px-3 py-1.5 bg-zinc-800 text-gray-400 border border-zinc-700 rounded-lg hover:border-cyan-500/40 hover:text-cyan-400 hover:bg-cyan-500/5 transition-all cursor-default"
+                >
+                  {tech}
+                </motion.span>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
         {/* Projects */}
-        <h2 className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex justify-between items-center">
+        <h2 id="projects" className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex justify-between items-center">
           <span className="flex items-center gap-2">
             <Rocket size={16} className="text-cyan-400" />
             Project_Portfolio
@@ -2175,6 +2382,19 @@ const App = () => {
                 }}
               >
                 {project.securityLevel === 'Kernel' && <KernelPulse />}
+                
+                {/* Flagship badge for Tartarus */}
+                {project._id === 'p11' && (
+                  <div className="absolute top-3 right-3 z-20">
+                    <motion.div
+                      animate={{ opacity: [1, 0.7, 1] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="text-[9px] font-mono px-2 py-0.5 bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 rounded uppercase tracking-widest"
+                    >
+                      ★ Flagship
+                    </motion.div>
+                  </div>
+                )}
                 
                 <div className="flex justify-between items-start mb-5 relative z-10">
                   <div className="flex items-center gap-3 flex-1">
@@ -2262,6 +2482,75 @@ const App = () => {
           ))}
         </div>
         
+        {/* ==================== CONTACT / CTA ==================== */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mb-24 relative overflow-hidden"
+        >
+          <div className="p-12 bg-gradient-to-br from-cyan-500/10 via-zinc-900/80 to-emerald-500/10 border-2 border-cyan-500/40 rounded-2xl shadow-2xl shadow-cyan-500/10 relative overflow-hidden">
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/5 to-transparent pointer-events-none"
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+            />
+            <div className="relative z-10 text-center">
+              <motion.div
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                className="inline-block mb-6"
+              >
+                <div className="p-4 bg-cyan-500/10 border-2 border-cyan-500/40 rounded-2xl">
+                  <Radar size={40} className="text-cyan-400" />
+                </div>
+              </motion.div>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                <GlitchText>OPEN_TO_CONNECT</GlitchText>
+              </h2>
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-8 font-mono leading-relaxed">
+                Whether you need a <span className="text-cyan-400">kernel security engineer</span>, a <span className="text-emerald-400">full-stack architect</span>, or someone who can operate at both Ring 0 and the cloud layer — let's talk.
+              </p>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <motion.a
+                  href="mailto:adnan@example.com"
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(6, 182, 212, 0.5)', y: -5 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-10 py-5 bg-gradient-to-r from-cyan-600 to-emerald-600 rounded-2xl font-black text-white text-lg shadow-2xl shadow-cyan-500/20 flex items-center gap-3 border border-white/10"
+                >
+                  <Zap size={24} />
+                  INITIATE_CONTACT
+                </motion.a>
+                <motion.a
+                  href="https://github.com/SS7ZX"
+                  target="_blank"
+                  rel="noreferrer"
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-10 py-5 bg-zinc-900 border-2 border-zinc-700 hover:border-cyan-500/60 rounded-2xl font-black text-gray-300 hover:text-white text-lg flex items-center gap-3 transition-all"
+                >
+                  <Code2 size={24} />
+                  VIEW_GITHUB
+                </motion.a>
+              </div>
+              <div className="mt-10 flex flex-wrap justify-center gap-8 text-xs font-mono text-gray-500">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span>AVAILABLE FOR OPPORTUNITIES</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Globe size={12} className="text-cyan-400" />
+                  <span>DEPOK, INDONESIA · REMOTE OK</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield size={12} className="text-emerald-400" />
+                  <span>SECURITY CLEARANCE READY</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Footer */}
         <footer className="mt-48 pt-10 border-t-2 border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] font-mono uppercase text-gray-600">
           <div className="flex items-center flex-wrap gap-6">
