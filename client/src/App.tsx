@@ -1970,7 +1970,7 @@ const App = () => {
 
   {/* LinkedIn */}
   <motion.a
-    href="www.linkedin.com/in/adnansyukurs"
+    href="https://www.linkedin.com/in/adnansyukurs"
     target="_blank"
     rel="noreferrer"
     whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(139, 92, 246, 0.4)', y: -5 }}
