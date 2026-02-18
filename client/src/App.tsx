@@ -1892,7 +1892,7 @@ const App = () => {
       y: -5 
     }}
     whileTap={{ scale: 0.95 }}
-    className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-emerald-600 rounded-xl font-bold text-white shadow-lg shadow-cyan-500/20 flex items-center gap-3 border border-white/10 group"
+    className="px-8 py-4 bg-linear-to-r from-cyan-600 to-emerald-600 rounded-xl font-bold text-white shadow-lg shadow-cyan-500/20 flex items-center gap-3 border border-white/10 group"
   >
     <Code2 size={22} className="group-hover:rotate-12 transition-transform" />
     <span className="tracking-tight">ACCESS_SOURCE_CODE</span>
@@ -1957,13 +1957,13 @@ const App = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mb-16 relative overflow-hidden"
         >
-          <div className="p-8 bg-gradient-to-r from-emerald-950/60 via-zinc-900/90 to-purple-950/60 border-2 border-emerald-500/50 rounded-2xl shadow-2xl shadow-emerald-500/20 relative overflow-hidden">
+          <div className="p-8 bg-linear-to-rbg-linear-to-r from-emerald-950/60 via-zinc-900/90 to-purple-950/60 border-2 border-emerald-500/50 rounded-2xl shadow-2xl shadow-emerald-500/20 relative overflow-hidden">
             {/* Corner accent */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-500/20 to-transparent rounded-bl-[100px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-500/10 to-transparent rounded-tr-[80px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-tr from-emerald-500/20 to-transparent rounded-bl-[100px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-linear-to-tr from-purple-500/10 to-transparent rounded-tr-[80px] pointer-events-none" />
             {/* Animated scan line */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500/8 to-transparent pointer-events-none"
+              className="absolute inset-0 bg-linear-to-r from-transparent via-emerald-500/8 to-transparent pointer-events-none"
               animate={{ x: ['-100%', '200%'] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
             />
@@ -2001,7 +2001,7 @@ const App = () => {
                   { val: '0ms', label: 'FD Leak', color: 'text-cyan-400' },
                   { val: '★★★★★', label: 'Verdict', color: 'text-yellow-300' },
                 ].map((s) => (
-                  <div key={s.label} className="min-w-[60px]">
+                  <div key={s.label} className="min-w-15">
                     <div className={`text-xl font-black font-mono ${s.color}`}>{s.val}</div>
                     <div className="text-[8px] font-mono text-gray-500 uppercase">{s.label}</div>
                   </div>
@@ -2074,7 +2074,7 @@ const App = () => {
               className="p-8 bg-zinc-900/60 border-2 border-cyan-500/40 rounded-2xl flex flex-col items-center justify-center hover:bg-zinc-900/80 transition-all relative overflow-hidden"
             >
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-emerald-500/5 pointer-events-none"
+                className="absolute inset-0 bg-linear-to-br from-cyan-500/5 to-emerald-500/5 pointer-events-none"
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 3, repeat: Infinity }}
               />
@@ -2290,7 +2290,7 @@ const App = () => {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: ci * 0.15 }}
-                  className={`p-8 bg-gradient-to-b ${category.bgColor} border-2 ${category.borderColor} rounded-2xl hover:border-${category.color}-500/70 transition-all`}
+                  className={`p-8 bg-linear-to-b ${category.bgColor} border-2 ${category.borderColor} rounded-2xl hover:border-${category.color}-500/70 transition-all`}
                 >
                   <div className="flex items-center gap-3 mb-6">
                     <span className="text-3xl">{category.icon}</span>
@@ -2305,7 +2305,7 @@ const App = () => {
                         </div>
                         <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden border border-zinc-700">
                           <motion.div
-                            className={`h-full bg-gradient-to-r from-${category.color}-600 to-${category.color}-400 rounded-full`}
+                            className={`h-full bg-linear-to-r from-${category.color}-600 to-${category.color}-400 rounded-full`}
                             initial={{ width: 0 }}
                             animate={{ width: `${skill.level}%` }}
                             transition={{ duration: 1.2, delay: ci * 0.15 + si * 0.1, ease: 'easeOut' }}
@@ -2489,9 +2489,9 @@ const App = () => {
           transition={{ duration: 0.8 }}
           className="mb-24 relative overflow-hidden"
         >
-          <div className="p-12 bg-gradient-to-br from-cyan-500/10 via-zinc-900/80 to-emerald-500/10 border-2 border-cyan-500/40 rounded-2xl shadow-2xl shadow-cyan-500/10 relative overflow-hidden">
+          <div className="p-12 bg-linear-to-br from-cyan-500/10 via-zinc-900/80 to-emerald-500/10 border-2 border-cyan-500/40 rounded-2xl shadow-2xl shadow-cyan-500/10 relative overflow-hidden">
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/5 to-transparent pointer-events-none"
+              className="absolute inset-0 bg-linear-to-r from-transparent via-cyan-500/5 to-transparent pointer-events-none"
               animate={{ x: ['-100%', '200%'] }}
               transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
             />
@@ -2516,7 +2516,7 @@ const App = () => {
                   href="mailto:adnan@example.com"
                   whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(6, 182, 212, 0.5)', y: -5 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-5 bg-gradient-to-r from-cyan-600 to-emerald-600 rounded-2xl font-black text-white text-lg shadow-2xl shadow-cyan-500/20 flex items-center gap-3 border border-white/10"
+                  className="px-10 py-5 bg-linear-to-r from-cyan-600 to-emerald-600 rounded-2xl font-black text-white text-lg shadow-2xl shadow-cyan-500/20 flex items-center gap-3 border border-white/10"
                 >
                   <Zap size={24} />
                   INITIATE_CONTACT
