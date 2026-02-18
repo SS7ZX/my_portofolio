@@ -216,6 +216,26 @@ const STATIC_PROJECTS: Project[] = [
     result: "Reduced transaction UI latency by 90% and eliminated 100% of server maintenance costs."
   }
 },
+{
+  _id: "p11",
+  title: "🏛️ Tartarus EDR: Omniscient Kernel Shield",
+  description: "A proactive, kernel-native Endpoint Detection and Response system leveraging eBPF to monitor, intercept, and neutralize unauthorized file access at the system-call level. Bridges Ring 0 kernel space to a Rust/Discord cloud relay with zero-leak security policy enforcement.",
+  tech: ["C (eBPF)", "Rust", "Linux Kernel", "BPF Ring Buffer", "Discord API", "Tokio Runtime", "SIGKILL Enforcement"],
+  securityLevel: 'Kernel',
+  audit: {
+    encryption: "Kernel-Space Memory Protection + BPF Ring Buffer Zero-Copy",
+    compliance: "NIST 800-53 / Multi-Vector Defense",
+    threats: "Rootkits, Syscall Hijacking, /etc/shadow, SSH Key Exfiltration, Sudoers Tampering"
+  },
+  category: "Kernel Security",
+  stars: 231,
+  downloads: 5800,
+  caseStudy: {
+    challenge: "Achieving zero file-descriptor leakage on unauthorized openat() syscalls while preventing recursive kernel panics from the EDR agent intercepting its own network calls to Discord.",
+    solution: "Deployed a 3-layer Golden Path architecture: (1) eBPF C Infiltrator hooking openat at Ring 0 with in-line evaluation, (2) bpf_send_signal(9) enforcer killing threads before FD return, (3) Rust control plane with PID Exclusion Logic and tokio::spawn for non-blocking Discord uplink, plus BPF Ring Buffer for zero-copy telemetry streaming.",
+    result: "Achieved zero-leak security policy across the full authentication stack (/etc/shadow, SSH keys, sudoers). Structured threat alerts delivered as Discord Rich Embed JSON with stateful forum thread management, bypassing 400 Bad Request errors via mandatory thread_name logic."
+  }
+},
 ];
 
 // ==================== CINEMATIC BOOT LOADER (KALI-INSPIRED) ====================
@@ -234,6 +254,7 @@ const KaliBootLoader = ({ onComplete }: { onComplete: () => void }) => {
     { text: '[ OK ] Initializing intrusion detection: Suricata', type: 'success' as const, duration: 900 },
     { text: '[ OK ] Loading kernel security modules: SELinux', type: 'success' as const, duration: 700 },
     { text: '[ OK ] Starting threat intelligence feeds', type: 'success' as const, duration: 600 },
+    { text: '[ OK ] Loading Tartarus EDR: Kernel Shield ACTIVE', type: 'success' as const, duration: 750 },
     { text: '[ OK ] Initializing vulnerability scanner: OpenVAS', type: 'success' as const, duration: 800 },
     { text: '[ OK ] Loading penetration testing tools', type: 'success' as const, duration: 700 },
     { text: '[ OK ] Starting network analysis: Wireshark', type: 'success' as const, duration: 600 },
@@ -1060,6 +1081,7 @@ const AdvancedTerminal = ({ onRootAccess, onScanTrigger, isRoot }: any) => {
       { type: 'output', text: '║  wireshark  - Start packet analyzer                    ║' },
       { type: 'output', text: '║  sysinfo    - Detailed system diagnostics              ║' },
       { type: 'output', text: '║  about      - About Adnan Syukur                       ║' },
+      { type: 'output', text: '║  tartarus   - Deep dive: Tartarus EDR architecture     ║' },
       { type: 'success', text: '╚════════════════════════════════════════════════════════╝' },
       { type: 'output', text: '' },
     ]),
@@ -1088,6 +1110,7 @@ const AdvancedTerminal = ({ onRootAccess, onScanTrigger, isRoot }: any) => {
         { type: 'output', text: '[*] Phase 4: Vulnerability assessment...' },
         { type: 'success', text: '[+] Scan complete!' },
         { type: 'success', text: `[+] Results: ${STATIC_PROJECTS.length} projects | 0 vulnerabilities | 100% secure` },
+        { type: 'warning', text: '[!] Kernel-class threats detected and neutralized by Tartarus EDR' },
         { type: 'output', text: '' },
       ]);
       onScanTrigger();
@@ -1123,6 +1146,8 @@ const AdvancedTerminal = ({ onRootAccess, onScanTrigger, isRoot }: any) => {
       { type: 'output', text: '                          CPU: Intel i9-13900K @ 5.8GHz' },
       { type: 'output', text: '                          GPU: NVIDIA RTX 4090 24GB' },
       { type: 'output', text: '                          Memory: 12.8GB / 64GB' },
+      { type: 'output', text: '                          EDR: Tartarus Kernel Shield v1.0' },
+      { type: 'warning', text: '                          Lang: C/eBPF, Rust, Python, Node.js' },
       { type: 'output', text: '' },
     ]),
     hack: () => addOutput([
@@ -1176,24 +1201,52 @@ const AdvancedTerminal = ({ onRootAccess, onScanTrigger, isRoot }: any) => {
       { type: 'output', text: '║  Processor:      Intel Core i9-13900K            ║' },
       { type: 'output', text: '║  Security:       SELinux Enforcing + eBPF LSM    ║' },
       { type: 'output', text: '║  Firewall:       nftables + Fail2ban Active      ║' },
+      { type: 'warning', text: '║  EDR:            Tartarus Kernel Shield v1.0     ║' },
+      { type: 'output', text: '║  Languages:      C/eBPF, Rust, Python, Node.js   ║' },
       { type: 'success', text: '╚═══════════════════════════════════════════════════╝' },
       { type: 'output', text: '' },
     ]),
     about: () => addOutput([
-      { type: 'success', text: '╔═══════════════════════════════════════════════════════════╗' },
-      { type: 'success', text: '║                    ADNAN SYUKUR                           ║' },
-      { type: 'success', text: '╠═══════════════════════════════════════════════════════════╣' },
-      { type: 'output', text: '║  Title:         Security Engineer & Full-Stack Developer ║' },
-      { type: 'output', text: '║  Focus:         Kernel Security, eBPF, Penetration Test  ║' },
-      { type: 'output', text: '║  Certs:         BNSP Rank 1, DB Developer, VAPT          ║' },
-      { type: 'output', text: '║  Institution:   Universitas Siber Indonesia              ║' },
-      { type: 'output', text: '║  Position:      Vice President, Student Association      ║' },
-      { type: 'output', text: '║  Skills:        C, eBPF, Linux Kernel, Python, Node.js   ║' },
-      { type: 'output', text: '║  GitHub:        github.com/SS7ZX                         ║' },
-      { type: 'success', text: '╚═══════════════════════════════════════════════════════════╝' },
+      { type: 'success', text: '╔════════════════════════════════════════════════════════════════╗' },
+      { type: 'success', text: '║                    ADNAN SYUKUR                                ║' },
+      { type: 'success', text: '╠════════════════════════════════════════════════════════════════╣' },
+      { type: 'output', text: '║  Title:         Security Engineer & Full-Stack Developer      ║' },
+      { type: 'output', text: '║  Focus:         Kernel Security, eBPF, Penetration Testing   ║' },
+      { type: 'output', text: '║  Certs:         BNSP Rank 1, DB Developer, VAPT               ║' },
+      { type: 'output', text: '║  Institution:   Universitas Siber Indonesia                   ║' },
+      { type: 'output', text: '║  Position:      Vice President, Student Association           ║' },
+      { type: 'output', text: '║  Skills:        C, eBPF, Rust, Linux Kernel, Python, Node.js  ║' },
+      { type: 'output', text: '║  Projects:      11 Deployed | 3 Kernel-Native EDR Systems     ║' },
+      { type: 'output', text: '║  GitHub:        github.com/SS7ZX                              ║' },
+      { type: 'success', text: '╠════════════════════════════════════════════════════════════════╣' },
+      { type: 'warning', text: '║  FLAGSHIP:      Tartarus EDR — Omniscient Kernel Shield       ║' },
+      { type: 'warning', text: '║                 eBPF openat hook → bpf_send_signal(9)         ║' },
+      { type: 'warning', text: '║                 Rust/Discord relay | Zero-leak policy         ║' },
+      { type: 'success', text: '╚════════════════════════════════════════════════════════════════╝' },
       { type: 'output', text: '' },
       { type: 'success', text: '"The quieter you become, the more you can hear." - Kali Linux' },
       { type: 'output', text: '' },
+    ]),
+    tartarus: () => addOutput([
+      { type: 'success', text: '╔════════════════════════════════════════════════════════════════╗' },
+      { type: 'success', text: '║         🏛️  TARTARUS EDR — OMNISCIENT KERNEL SHIELD            ║' },
+      { type: 'success', text: '╠════════════════════════════════════════════════════════════════╣' },
+      { type: 'warning', text: '  ARCHITECTURAL GOLDEN PATH:' },
+      { type: 'output',  text: '  [Ring 0] eBPF/C Infiltrator → hooks openat() syscall' },
+      { type: 'output',  text: '  [Kernel] Enforcer → bpf_send_signal(9) before FD return' },
+      { type: 'output',  text: '  [User]   Rust Control Plane → PID exclusion, lifecycle mgmt' },
+      { type: 'success', text: '  [Cloud]  Discord Uplink → Rich Embed JSON, forum threads' },
+      { type: 'success', text: '╠════════════════════════════════════════════════════════════════╣' },
+      { type: 'warning', text: '  EXPERT FEATURES:' },
+      { type: 'output',  text: '  ✓ Zero-Copy Telemetry via BPF Ring Buffer' },
+      { type: 'output',  text: '  ✓ Threaded Forum Integration (bypasses 400 Bad Request)' },
+      { type: 'output',  text: '  ✓ Multi-vector: /etc/shadow, SSH keys, sudoers' },
+      { type: 'output',  text: '  ✓ tokio::spawn async Discord relay (non-blocking kernel)' },
+      { type: 'output',  text: '  ✓ Cross-language safety: Rust ↔ C struct alignment' },
+      { type: 'success', text: '╠════════════════════════════════════════════════════════════════╣' },
+      { type: 'success', text: '  VERDICT: PROFESSIONAL GRADE ★★★★★' },
+      { type: 'success', text: '╚════════════════════════════════════════════════════════════════╝' },
+      { type: 'output',  text: '' },
     ]),
   };
   
@@ -1767,7 +1820,8 @@ const App = () => {
             <span className="text-green-400 font-bold"> kernel-level expertise</span>, 
             <span className="text-purple-400 font-bold"> full-stack mastery</span>, and 
             <span className="text-yellow-400 font-bold"> penetration testing excellence</span>. 
-            Created by <span className="text-white font-bold">Adnan Syukur</span>, BNSP Rank 1 Security Specialist.
+            Created by <span className="text-white font-bold">Adnan Syukur</span>, BNSP Rank 1 Security Specialist — 
+            builder of <span className="text-emerald-400 font-bold">Tartarus EDR</span>, the kernel-native shield that enforces zero-leak policy from Ring 0.
           </p>
           
 {/* ==================== ACTION SECTOR ==================== */}
@@ -1843,7 +1897,71 @@ const App = () => {
 </div>
         </motion.header>
 
-        {/* System Monitor */}
+        {/* Tartarus EDR Featured Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mb-16 relative overflow-hidden"
+        >
+          <div className="p-6 bg-gradient-to-r from-emerald-500/10 via-cyan-500/5 to-purple-500/10 border-2 border-emerald-500/50 rounded-2xl shadow-2xl shadow-emerald-500/20 relative overflow-hidden">
+            {/* Animated scan line */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent pointer-events-none"
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+            />
+            <div className="flex flex-wrap items-center gap-6 relative z-10">
+              <div className="flex items-center gap-3">
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+                  className="p-3 bg-emerald-500/20 border-2 border-emerald-500/50 rounded-xl"
+                >
+                  <Zap size={28} className="text-emerald-400" />
+                </motion.div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 rounded uppercase tracking-widest">NEW · Kernel-Grade</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 rounded uppercase tracking-widest">★ Featured Project</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">🏛️ Tartarus EDR: Omniscient Kernel Shield</h3>
+                  <p className="text-sm text-emerald-400/80 font-mono mt-0.5">eBPF · Rust · Ring 0 · bpf_send_signal(9) · Zero-Leak Policy · Discord Uplink</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-6 ml-auto text-center">
+                <div>
+                  <div className="text-2xl font-black text-white font-mono">231</div>
+                  <div className="text-[9px] font-mono text-yellow-400 uppercase">Stars</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-black text-white font-mono">5.8K</div>
+                  <div className="text-[9px] font-mono text-green-400 uppercase">Downloads</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-black text-emerald-400 font-mono">Ring 0</div>
+                  <div className="text-[9px] font-mono text-gray-400 uppercase">Privilege Level</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-black text-cyan-400 font-mono">0ms</div>
+                  <div className="text-[9px] font-mono text-gray-400 uppercase">FD Leak Time</div>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-emerald-500/20 grid grid-cols-3 gap-4 relative z-10">
+              {[
+                { label: 'The Infiltrator', desc: 'eBPF/C hooks openat() at Ring 0, inspects memory address inline', color: 'text-cyan-400' },
+                { label: 'The Enforcer', desc: 'bpf_send_signal(9) kills thread before FD ever returns — zero-leak', color: 'text-emerald-400' },
+                { label: 'The Uplink', desc: 'Rust tokio::spawn relay → Discord Rich Embed JSON with forum thread mgmt', color: 'text-purple-400' },
+              ].map((item) => (
+                <div key={item.label} className="p-3 bg-black/30 rounded-lg border border-zinc-800">
+                  <div className={`text-[10px] font-mono font-bold ${item.color} uppercase mb-1`}>{item.label}</div>
+                  <div className="text-[10px] text-gray-400 leading-relaxed">{item.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
         <h2 className="text-sm font-mono text-gray-500 uppercase tracking-[0.4em] mb-12 flex items-center gap-2">
           <Gauge size={16} className="text-cyan-400" />
           System_Performance_Monitor
@@ -2174,7 +2292,7 @@ const App = () => {
           
           <div className="flex items-center gap-4">
             <p className="text-center">
-              <GlitchText>© 2026 ADNAN SYUKUR // ADNAN OS v4.2.0-KALI</GlitchText>
+              <GlitchText>© 2026 ADNAN SYUKUR // ADNAN OS v4.3.0-TARTARUS</GlitchText>
             </p>
           </div>
         </footer>
