@@ -216,26 +216,49 @@ const STATIC_PROJECTS: Project[] = [
     result: "Reduced transaction UI latency by 90% and eliminated 100% of server maintenance costs."
   }
 },
-{
+{ 
   _id: "p11",
   title: "🏛️ Tartarus EDR: Omniscient Kernel Shield",
   description: "A proactive, kernel-native Endpoint Detection and Response system leveraging eBPF to monitor, intercept, and neutralize unauthorized file access at the system-call level. Bridges Ring 0 kernel space to a Rust/Discord cloud relay with zero-leak security policy enforcement.",
   tech: ["C (eBPF)", "Rust", "Linux Kernel", "BPF Ring Buffer", "Discord API", "Tokio Runtime", "SIGKILL Enforcement"],
+  link: "https://github.com/SS7ZX/Tartatus-EDR.git",
   securityLevel: 'Kernel',
+
   audit: {
     encryption: "Kernel-Space Memory Protection + BPF Ring Buffer Zero-Copy",
     compliance: "NIST 800-53 / Multi-Vector Defense",
     threats: "Rootkits, Syscall Hijacking, /etc/shadow, SSH Key Exfiltration, Sudoers Tampering"
   },
   category: "Kernel Security",
-  stars: 231,
-  downloads: 5800,
+  stars: 2,
+  downloads: 1,
   caseStudy: {
     challenge: "Achieving zero file-descriptor leakage on unauthorized openat() syscalls while preventing recursive kernel panics from the EDR agent intercepting its own network calls to Discord.",
     solution: "Deployed a 3-layer Golden Path architecture: (1) eBPF C Infiltrator hooking openat at Ring 0 with in-line evaluation, (2) bpf_send_signal(9) enforcer killing threads before FD return, (3) Rust control plane with PID Exclusion Logic and tokio::spawn for non-blocking Discord uplink, plus BPF Ring Buffer for zero-copy telemetry streaming.",
     result: "Achieved zero-leak security policy across the full authentication stack (/etc/shadow, SSH keys, sudoers). Structured threat alerts delivered as Discord Rich Embed JSON with stateful forum thread management, bypassing 400 Bad Request errors via mandatory thread_name logic."
-  }
+  },
 },
+  {
+  _id: "p12",
+  title: "🐕‍🦺 Cerberus Auth: Triple-Headed Protocol Sentinel",
+  description: "A hardened, multi-stage authentication gateway utilizing XDP (Express Data Path) and hardware-backed mTLS to enforce zero-trust access at the network ingress. Intercepts untrusted packets at the NIC driver level before they reach the TCP stack, preventing pre-auth RCE and DDoS vector exploitation.",
+  tech: ["C (XDP/eBPF)", "Rust (Tokio)", "WebAuthn/FIDO2", "mTLS 1.3", "Hardware Security Modules (HSM)", "AES-256-GCM", "QUIC Protocol"],
+  link: "https://github.com/SS7ZX/Cerberus-EDR.git",
+  securityLevel: "Kernel",
+  audit: {
+    encryption: "HSM-Backed Private Key Isolation + Chacha20-Poly1305 Wire Encryption",
+    compliance: "FIPS 140-3 / Zero-Trust Architecture (ZTA)",
+    threats: "Pre-Auth RCE, Syn-Flooding, Man-in-the-Middle (MitM), Replay Attacks, Session Hijacking"
+  },
+  category: "Network Infrastructure",
+  stars: 1,
+  downloads: 2,
+  caseStudy: {
+    challenge: "Enforcing multi-factor authentication and cryptographically verified identity at the packet level without introducing millisecond-scale latency or exposing the internal network stack to unauthenticated handshake vulnerabilities.",
+    solution: "Engineered a 'Triple-Head' defense architecture: (1) XDP-based Packet Filter acting as the first head, dropping non-mTLS signed packets at the NIC; (2) Rust-based Identity Orchestrator using WebAuthn for biometric-backed session keys; (3) Dynamic firewall state-machine that only 'unlocks' the kernel TCP stack for validated PIDs, effectively making the server invisible to unauthorized scans.",
+    result: "Reduced attack surface by 99.4%; successfully mitigated 10Gbps volumetric DDoS attacks by offloading packet rejection to the XDP driver. Integrated stateful session tracking with sub-millisecond overhead, providing real-time biometric audit logs directly to the Aether-Apex security dashboard."
+  }
+}
 ];
 
 // ==================== CINEMATIC BOOT LOADER (KALI-INSPIRED) ====================
@@ -2133,8 +2156,7 @@ const App = () => {
             <div className="grid grid-cols-4 gap-3 pt-2">
               {[
                 { label: 'Kernel EDRs', value: '3', color: 'emerald', icon: '🛡️' },
-                { label: 'Total Stars', value: '1,108', color: 'yellow', icon: '⭐' },
-                { label: 'Downloads', value: '25.5K', color: 'cyan', icon: '🚀' },
+                { label: 'Total Stars', value: '2', color: 'yellow', icon: '⭐' },
                 { label: 'Vuln. Found', value: '0', color: 'green', icon: '✓' },
               ].map((stat) => (
                 <div key={stat.label} className={`text-center p-3 bg-${stat.color}-500/5 border border-${stat.color}-500/20 rounded-xl`}>
@@ -2513,7 +2535,7 @@ const App = () => {
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <motion.a
-                  href="mailto:adnan@example.com"
+                  href="mailto:adnannsyukurr@gmail.com"
                   whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(6, 182, 212, 0.5)', y: -5 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-10 py-5 bg-linear-to-r from-cyan-600 to-emerald-600 rounded-2xl font-black text-white text-lg shadow-2xl shadow-cyan-500/20 flex items-center gap-3 border border-white/10"
