@@ -1925,22 +1925,32 @@ const App = () => {
   {/* Resume Download */}
   <motion.button
     onClick={() => {
-      const btn = document.getElementById('download-btn-text');
-      if (btn) btn.innerText = "INITIALIZING_SECURE_TRANSFER...";
-      setTimeout(() => {
-        if (btn) btn.innerText = "DECRYPTING_RESUME.DAT...";
-        setTimeout(() => {
-          const link = document.createElement('a');
-          link.href = '/CV_Adnan_Syukur.pdf';
-          link.download = 'public/CV_ADNAN_SYUKUR_2026.pdf';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          if (btn) btn.innerText = "TRANSFER_COMPLETE ✓";
-          setTimeout(() => { if (btn) btn.innerText = "DOWNLOAD_RESUME"; }, 3000);
-        }, 1500);
-      }, 1000);
-    }}
+  const btn = document.getElementById('download-btn-text');
+  if (btn) btn.innerText = "INITIALIZING_SECURE_TRANSFER...";
+  
+  setTimeout(() => {
+    if (btn) btn.innerText = "DECRYPTING_RESUME.DAT...";
+    
+    setTimeout(() => {
+      const link = document.createElement('a');
+      
+      // 1. The 'href' is relative to the public folder (root /)
+      link.href = '/CV_ADNAN_SYUKUR_2026.pdf'; 
+      
+      // 2. The 'download' attribute is the filename given to the user
+      link.download = 'CV_ADNAN_SYUKUR_2026.pdf'; 
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      if (btn) btn.innerText = "TRANSFER_COMPLETE ✓";
+      setTimeout(() => { 
+        if (btn) btn.innerText = "DOWNLOAD_RESUME"; 
+      }, 3000);
+    }, 1500);
+  }, 1000);
+}}
     whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(16, 185, 129, 0.4)', y: -5 }}
     whileTap={{ scale: 0.95 }}
     className="px-8 py-4 bg-emerald-500/10 border-2 border-emerald-500/40 rounded-xl font-bold text-emerald-400 hover:bg-emerald-500/20 transition-all flex items-center gap-3 relative overflow-hidden group"
@@ -1960,7 +1970,7 @@ const App = () => {
 
   {/* LinkedIn */}
   <motion.a
-    href="https://linkedin.com"
+    href="www.linkedin.com/in/adnansyukurs"
     target="_blank"
     rel="noreferrer"
     whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(139, 92, 246, 0.4)', y: -5 }}
@@ -2535,7 +2545,7 @@ const App = () => {
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <motion.a
-                  href="mailto:adnannsyukurr@gmail.com"
+                  href="https://wa.me/6289601121014?text=Hi%20Adnan%2C%20I%27m%20interested%20in%20connecting%20with%20you%20regarding%20potential%20opportunities."
                   whileHover={{ scale: 1.05, boxShadow: '0 0 50px rgba(6, 182, 212, 0.5)', y: -5 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-10 py-5 bg-linear-to-r from-cyan-600 to-emerald-600 rounded-2xl font-black text-white text-lg shadow-2xl shadow-cyan-500/20 flex items-center gap-3 border border-white/10"
