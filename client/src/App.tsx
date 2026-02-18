@@ -1932,7 +1932,7 @@ const App = () => {
         setTimeout(() => {
           const link = document.createElement('a');
           link.href = '/CV_Adnan_Syukur.pdf';
-          link.download = 'Adnan_Syukur_CV.pdf';
+          link.download = 'public/CV_ADNAN_SYUKUR_2026.pdf';
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
