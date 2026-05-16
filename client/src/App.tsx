@@ -76,14 +76,14 @@ const STATIC_EXPERIENCES: Experience[] = [
     organization: "Universitas Siber Indonesia, STI Student Association",
     description: "Leading strategic initiatives and coordinating departmental synergy for 3rd-semester Information Systems students.",
     period: "2024 - Present",
-    achievements: ["Led 200+ member organization", "Organized 10+ technical events", "Increased engagement by 150%"]
+    achievements: ["Led 50+ member organization", "Organized 10+ technical events", "Increased engagement by 150%"]
   },
   {
     _id: "e3",
     title: "Head of Basketball Division",
     organization: "Sports UKM (Student Activity Unit)",
     description: "Managing team logistics, training schedules, and competitive strategy for the university basketball division.",
-    period: "2023 - Present",
+    period: "2023 - 2024",
     achievements: ["Managed 30+ athletes", "Won 3 regional championships", "Improved team performance 40%"]
   }
 ];
