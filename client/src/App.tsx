@@ -61,16 +61,25 @@ interface ThreatAlert {
 
 // ==================== COMPREHENSIVE DATA ====================
 const STATIC_EXPERIENCES: Experience[] = [
+
   {
     _id: "e1",
+    title: "President (Ketua Himpunan)",
+    organization: "Universitas Siber Indonesia, STI Student Association",
+    description: "Spearheading organizational vision and operational execution for 50+ members in the Information Technology Student Association.",
+    period: "2026 Maret - Present",
+    achievements: ["Led 50+ member organization", "Organized 20+ technical events", "Increased engagement by 200%", "Created mentorship program for members"]
+  },
+  {
+    _id: "e2",
     title: "Vice President (Wakil Himpunan)",
-    organization: "Universitas Siber Indonesia, IS&T Student Association",
+    organization: "Universitas Siber Indonesia, STI Student Association",
     description: "Leading strategic initiatives and coordinating departmental synergy for 3rd-semester Information Systems students.",
     period: "2024 - Present",
     achievements: ["Led 200+ member organization", "Organized 10+ technical events", "Increased engagement by 150%"]
   },
   {
-    _id: "e2",
+    _id: "e3",
     title: "Head of Basketball Division",
     organization: "Sports UKM (Student Activity Unit)",
     description: "Managing team logistics, training schedules, and competitive strategy for the university basketball division.",
@@ -136,7 +145,7 @@ const STATIC_PROJECTS: Project[] = [
     audit: { encryption: "RSA-4096", compliance: "SaaS Integrity", threats: "API Scraping, Key Leakage" },
     category: "AI/ML",
     stars: 92,
-    downloads: 2100
+    downloads: 2
   },
   {
     _id: "p6",
