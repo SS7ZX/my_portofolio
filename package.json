@@ -1,8 +1,19 @@
 {
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix client run dev",
+    "client": "npm --prefix client run dev",
+    "server": "npm --prefix server run dev",
+    "build": "npm --prefix client run build && npm --prefix server run build"
+  },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
     "@types/node": "^25.8.0",
     "@vitejs/plugin-react": "^6.0.2",
     "lightningcss": "^1.32.0"
+  },
+  "dependencies": {
+    "baseline-browser-mapping": "^2.10.43",
+    "caniuse-lite": "^1.0.30001805"
   }
 }
