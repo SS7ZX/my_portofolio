@@ -267,6 +267,88 @@ const STATIC_PROJECTS: Project[] = [
     solution: "Engineered a 'Triple-Head' defense architecture: (1) XDP-based Packet Filter acting as the first head, dropping non-mTLS signed packets at the NIC; (2) Rust-based Identity Orchestrator using WebAuthn for biometric-backed session keys; (3) Dynamic firewall state-machine that only 'unlocks' the kernel TCP stack for validated PIDs, effectively making the server invisible to unauthorized scans.",
     result: "Reduced attack surface by 99.4%; successfully mitigated 10Gbps volumetric DDoS attacks by offloading packet rejection to the XDP driver. Integrated stateful session tracking with sub-millisecond overhead, providing real-time biometric audit logs directly to the Aether-Apex security dashboard."
   }
+},
+  {
+  _id: "p13",
+  title: "⚔️ Arena RPG: Turn-Based Combat Engine",
+  description: "A console-based turn-based combat game engineered as the capstone project for Object-Oriented Programming (PBO) coursework. Modular Java 17+ architecture cleanly demonstrates all 4 Pillars of OOP alongside multiple Design Patterns, with zero cross-layer coupling.",
+  tech: ["Java 17+", "OOP", "Design Patterns", "Modular Architecture", "Console UI"],
+  link: "https://github.com/SS7ZX/Arena-RPG",
+  securityLevel: 'Standard',
+  audit: {
+    encryption: "N/A — Local Execution Only",
+    compliance: "PBO Academic Standard",
+    threats: "N/A — No Network Attack Surface"
+  },
+  category: "Software Engineering",
+  stars: 6,
+  downloads: 40,
+  caseStudy: {
+    challenge: "Demonstrating clean OOP architecture — Encapsulation, Inheritance, Polymorphism, and Abstraction — plus multiple Design Patterns, without any layer directly depending on another layer's internals.",
+    solution: "Built a modular combat engine separating Character, Combat, and UI layers behind interfaces, applying patterns such as Factory, Strategy, and Observer to decouple turn-resolution logic from rendering and input handling.",
+    result: "Delivered a fully playable turn-based combat loop as the final PBO project with zero direct cross-layer dependencies, cleanly demonstrating loose coupling in practice."
+  }
+},
+  {
+  _id: "p14",
+  title: "🎓 SKPI Calculator",
+  description: "A Next.js + Supabase platform for Cyber University students to calculate SKPI (co-curricular) activity points, upload supporting evidence, and submit proposals for Kaprodi review — enforced end-to-end with strict row-level security.",
+  tech: ["Next.js", "Supabase", "TypeScript", "Zod", "Radix UI", "PostgreSQL RLS"],
+  securityLevel: 'High',
+  audit: {
+    encryption: "Supabase-Managed TLS + Signed Storage URLs",
+    compliance: "Row-Level Security (RLS) Enforced",
+    threats: "Privilege Escalation, Unauthorized Cross-User File Access"
+  },
+  category: "EdTech",
+  stars: 9,
+  downloads: 60,
+  caseStudy: {
+    challenge: "Guaranteeing that a student could never read or modify another student's SKPI submission, activity items, or uploaded documents — even via a direct, hand-crafted API call.",
+    solution: "Implemented database-level Row-Level Security policies scoping every table and storage object path to the authenticated user's own record, with a separate service-role-gated path for admin review and approval actions.",
+    result: "Zero cross-user data exposure verified across submissions, activity items, and private document storage, with a clean Kaprodi review and approval workflow layered on top."
+  }
+},
+  {
+  _id: "p15",
+  title: "🍩 Donut Shop Pro",
+  description: "A premium artisan donut storefront and admin dashboard with full customer checkout, a simulated payment gateway (QRIS / bank transfer), and a real-time admin console for managing products and live order queues.",
+  tech: ["Next.js", "Supabase", "Drizzle ORM", "Zustand", "Framer Motion", "Tailwind CSS"],
+  securityLevel: 'Standard',
+  audit: {
+    encryption: "Supabase Auth + SSL/TLS",
+    compliance: "Mock Payment Sandbox (Provider-Agnostic)",
+    threats: "Cart Tampering, Order Spoofing"
+  },
+  category: "E-Commerce",
+  stars: 11,
+  downloads: 90,
+  caseStudy: {
+    challenge: "Next.js hot-module-reload during development kept spawning duplicate Supabase clients, throwing 'Multiple GoTrueClient instances' warnings and corrupting auth session state.",
+    solution: "Replaced per-component client creation with a single global Supabase client singleton shared across the storefront, auth context, and admin dashboard.",
+    result: "Stable auth sessions across HMR reloads, plus a clean end-to-end flow from checkout through payment simulation to order confirmation and live status tracking."
+  }
+},
+  {
+  _id: "p16",
+  title: "🐦 Kios Burung: Inventory & POS System",
+  description: "A Laravel-based inventory and point-of-sale platform for bird-product kiosks, featuring batch-level stock tracking with expiry dates, automated low-stock/expiry notifications, and one-click XLSX export.",
+  tech: ["Laravel", "PHP", "MySQL", "Sanctum Auth", "Eloquent ORM"],
+  link: "",
+  securityLevel: 'Standard',
+  audit: {
+    encryption: "Sanctum Token Auth + Bcrypt Password Hashing",
+    compliance: "CORS-Restricted API Access",
+    threats: "Unauthorized Stock Manipulation, Token Replay"
+  },
+  category: "Retail / POS",
+  stars: 7,
+  downloads: 35,
+  caseStudy: {
+    challenge: "Tracking inventory accurately across multiple batches with different expiry dates, while keeping every sales transaction's stock deduction atomic and consistent.",
+    solution: "Modeled stock as batch-level records tied to each product with remaining-quantity tracking, automatic deduction on sale completion, and a scheduled daily job checking for approaching expiry dates.",
+    result: "Real-time, batch-accurate stock visibility for cashiers, with proactive low-stock and expiry notifications and one-click XLSX exports for reporting."
+  }
 }
 ];
 
@@ -1248,7 +1330,7 @@ const AdvancedTerminal = ({ onRootAccess, onScanTrigger, isRoot }: any) => {
       { type: 'output', text: '║  Institution:   Universitas Siber Indonesia                   ║' },
       { type: 'output', text: '║  Position:      Vice President, Student Association           ║' },
       { type: 'output', text: '║  Skills:        C, eBPF, Rust, Linux Kernel, Python, Node.js  ║' },
-      { type: 'output', text: '║  Projects:      11 Deployed | 3 Kernel-Native EDR Systems     ║' },
+      { type: 'output', text: '║  Projects:      16 Deployed | 3 Kernel-Native EDR Systems     ║' },
       { type: 'output', text: '║  GitHub:        github.com/SS7ZX                              ║' },
       { type: 'success', text: '╠════════════════════════════════════════════════════════════════╣' },
       { type: 'warning', text: '║  FLAGSHIP:      Tartarus EDR — Omniscient Kernel Shield       ║' },
@@ -1758,7 +1840,7 @@ const App = () => {
     }, 180);
   }, []);
 
-  // Auto-scan on boot so counter always shows all 11 projects immediately
+  // Auto-scan on boot so counter always shows all projects immediately
   const handleBootComplete = useCallback(() => {
     setBootComplete(true);
     setTimeout(() => startScan(), 800);
@@ -2369,7 +2451,7 @@ const App = () => {
           >
             <p className="text-[9px] font-mono text-gray-600 uppercase tracking-widest mb-4">Full Technology Stack</p>
             <div className="flex flex-wrap gap-2">
-              {['C', 'eBPF', 'Rust', 'Python', 'Node.js', 'React', 'TypeScript', 'Linux Kernel', 'Docker', 'Firebase', 'MongoDB', 'Redis', 'Figma', 'Burp Suite', 'Nmap', 'Metasploit', 'Wireshark', 'LSM Hooks', 'BPF Ring Buffer', 'tokio', 'OWASP', 'x86_64 ASM', 'Kprobes', 'SELinux', 'nftables', 'Git', 'Google Cloud', 'Tailwind CSS', 'JWT', 'OAuth2'].map((tech, i) => (
+              {['C', 'eBPF', 'Rust', 'Python', 'Node.js', 'React', 'TypeScript', 'Linux Kernel', 'Docker', 'Firebase', 'MongoDB', 'Redis', 'Figma', 'Burp Suite', 'Nmap', 'Metasploit', 'Wireshark', 'LSM Hooks', 'BPF Ring Buffer', 'tokio', 'OWASP', 'x86_64 ASM', 'Kprobes', 'SELinux', 'nftables', 'Git', 'Google Cloud', 'Tailwind CSS', 'JWT', 'OAuth2', 'Next.js', 'Laravel', 'PHP', 'Drizzle ORM', 'Zustand', 'Java'].map((tech, i) => (
                 <motion.span
                   key={tech}
                   initial={{ opacity: 0, scale: 0.8 }}
